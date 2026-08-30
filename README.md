@@ -200,47 +200,98 @@ S3 ----------------> S5
 ```
 # Representation of Hospital Delivery Robot as an MDP
 
+# States
 states = {
-    "S1": "Pharmacy",
-    "S2": "Main Corridor",
-    "S3": "Reception Area",
-    "S4": "Emergency Corridor",
-    "S5": "Patient Room Corridor",
-    "S6": "Patient Room"
+    0: "Pharmacy",
+    1: "Main Corridor",
+    2: "Reception Area",
+    3: "Emergency Corridor",
+    4: "Patient Room Corridor",
+    5: "Patient Room"
 }
 
+# Actions
 actions = {
-    "S1": ["Forward", "Right"],
-    "S2": ["Forward", "Left", "Right"],
-    "S3": ["Forward", "Right"],
-    "S4": ["Forward", "Left"],
-    "S5": ["Forward", "Left", "Right"],
-    "S6": ["Stop"]
+    0: "Forward",
+    1: "Left",
+    2: "Right",
+    3: "Stop"
 }
 
-transitions = {
-    ("S1", "Forward"): {"S2": 0.9, "S3": 0.1},
-    ("S2", "Forward"): {"S5": 0.9, "S4": 0.1},
-    ("S3", "Forward"): {"S4": 0.9, "S2": 0.1},
-    ("S4", "Forward"): {"S5": 0.9, "S4": 0.1},
-    ("S5", "Forward"): {"S6": 0.9, "S5": 0.1}
+# MDP Representation
+# Format:
+# P[state][action] = [(probability, next_state, reward, done)]
+
+P = {
+
+    # S1 - Pharmacy
+    0: {
+        0: [(0.9, 1, -1, False),
+            (0.1, 2, -1, False)],
+
+        1: [(1.0, 0, -1, False)],
+
+        2: [(1.0, 2, -1, False)]
+    },
+
+    # S2 - Main Corridor
+    1: {
+        0: [(0.9, 4, -1, False),
+            (0.1, 3, -1, False)],
+
+        1: [(1.0, 0, -1, False)],
+
+        2: [(1.0, 3, -1, False)]
+    },
+
+    # S3 - Reception Area
+    2: {
+        0: [(0.9, 3, -1, False),
+            (0.1, 1, -1, False)],
+
+        1: [(1.0, 2, -1, False)],
+
+        2: [(1.0, 3, -1, False)]
+    },
+
+    # S4 - Emergency Corridor
+    3: {
+        0: [(0.9, 4, -1, False),
+            (0.1, 3, -1, False)],
+
+        1: [(1.0, 2, -1, False)]
+    },
+
+    # S5 - Patient Room Corridor
+    4: {
+        0: [(0.9, 5, 100, True),
+            (0.1, 4, -1, False)],
+
+        1: [(1.0, 3, -1, False)],
+
+        2: [(1.0, 1, -1, False)]
+    },
+
+    # S6 - Patient Room
+    5: {
+        3: [(1.0, 5, 0, True)]
+    }
 }
 
-rewards = {
-    ("S1", "Forward", "S2"): -1,
-    ("S2", "Forward", "S5"): -1,
-    ("S3", "Forward", "S4"): -1,
-    ("S4", "Forward", "S5"): -1,
-    ("S5", "Forward", "S6"): 100
-}
-
+# Discount factor
 gamma = 0.9
 
-print("States:", states)
-print("Actions:", actions)
-print("Transition Probabilities:", transitions)
-print("Rewards:", rewards)
-print("Discount Factor:", gamma)
+print("\nStates:")
+print(states)
+
+print("\nActions:")
+print(actions)
+
+print("\nMDP (P):")
+print(P)
+
+print("\nDiscount Factor:", gamma)
+
 ```
 
 
@@ -256,9 +307,7 @@ Use Python dictionaries to represent the MDP.
 ```
 ---
 ## Output
-
-<img width="895" height="403" alt="Screenshot 2026-08-04 155428" src="https://github.com/user-attachments/assets/74793b2d-b68f-4ed8-ad76-6332c527e735" />
-
+<img width="1675" height="309" alt="image" src="https://github.com/user-attachments/assets/838f1ae5-4a93-4202-a63f-9250c4b2a8e7" />
 
 
 ---
